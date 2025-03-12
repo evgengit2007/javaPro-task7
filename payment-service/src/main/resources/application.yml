@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: payments-core
+
+server:
+  port: 8990
+
+service:
+  integration:
+    payments-client:
+      uri: "http://localhost:8989/products"
+      connect-timeout: 5s
+      read-timeout: 5s
+      product-id: "/{pid}"
+      user-id: "/user/{uid}"
+      sum: "/{sum}"
+      account-number: "/{acc}"
+      payment-method: "/v1/api/users/user?id=1"
+
+#service:
+#  payment-method: "executor/payments/execute"

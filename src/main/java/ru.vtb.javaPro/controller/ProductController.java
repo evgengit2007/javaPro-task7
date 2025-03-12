@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/rest")
+@RequestMapping(value = "/v1/api/products")
 public class ProductController {
 
     private final ProductService productService;
