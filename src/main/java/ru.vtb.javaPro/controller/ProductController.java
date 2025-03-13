@@ -2,6 +2,7 @@ package ru.vtb.javaPro.controller;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.web.bind.annotation.*;
+import ru.vtb.javaPro.dto.ProductDto;
 import ru.vtb.javaPro.dto.ProductResponse;
 import ru.vtb.javaPro.entity.Product;
 import ru.vtb.javaPro.service.ProductService;
@@ -31,13 +32,13 @@ public class ProductController {
     // http://localhost:8989/products/v1/api/products/user/1
     @RequestMapping("/user/{uid}")
     public ProductResponse findByProductWithUser(@PathVariable Long uid) {
-        List<Product> productList;
+        List<ProductDto> productDtoList;
         try {
-            productList = productService.findByProductWithUser(userService.findUserById(uid).getId());
+            productDtoList = productService.findByProductWithUser(userService.findUserById(uid).getId());
         } catch (EntityNotFoundException exception) {
-            productList = null;
+            productDtoList = null;
         }
-        ProductResponse productResponse = new ProductResponse(productList);
+        ProductResponse productResponse = new ProductResponse(productDtoList);
         return productResponse;
     }
 
@@ -48,9 +49,9 @@ public class ProductController {
     }
 
     @PostMapping("/create")
-    public ProductResponse updateBalance(@RequestBody Product product) {
-        System.out.println(product);
-        return new ProductResponse(List.of(productService.create(product)));
+    public ProductResponse updateBalance(@RequestBody ProductDto productDto) {
+        System.out.println(productDto);
+        return new ProductResponse(List.of(productService.create(productDto)));
     }
 
 }

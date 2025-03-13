@@ -103,3 +103,4 @@ replay_pid*
 /target/maven-status/maven-compiler-plugin/compile/default-cli/createdFiles.lst
 /target/maven-status/maven-compiler-plugin/compile/default-cli/inputFiles.lst
 /.idea/uiDesigner.xml
+/payment-service/payment-service.iml
