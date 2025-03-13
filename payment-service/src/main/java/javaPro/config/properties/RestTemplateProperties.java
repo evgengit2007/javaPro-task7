@@ -3,12 +3,13 @@ package javaPro.config.properties;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.time.Duration;
 
 @Getter
 @Setter
 public class RestTemplateProperties {
+
+    private final String allPath;
     private final String uri;
     private final Duration connectTimeout;
     private final Duration readTimeout;
@@ -18,7 +19,8 @@ public class RestTemplateProperties {
     private final String accountNumber;
     private final String paymentMethod;
 
-    public RestTemplateProperties(String uri,
+    public RestTemplateProperties(String allPath,
+                                  String uri,
                                   Duration connectTimeout,
                                   Duration readTimeout,
                                   String productId,
@@ -27,6 +29,7 @@ public class RestTemplateProperties {
                                   String accountNumber,
                                   String paymentMethod)
     {
+        this.allPath = allPath;
         this.uri = uri;
         this.connectTimeout = connectTimeout;
         this.readTimeout = readTimeout;

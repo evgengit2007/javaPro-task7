@@ -15,11 +15,11 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/user")
-//    @GetMapping("/user")
-    public UserResponse findUserById(@RequestParam("id") Long id) {
-        System.out.println("id = " + id);
-        return new UserResponse(Collections.singletonList(userService.findUserById(id)));
+    // http://localhost:8989/products/v1/api/users/user/1
+    @RequestMapping("/user/{uid}")
+    public UserResponse findUserById(@PathVariable Long uid) {
+        System.out.println("uid = " + uid);
+        return new UserResponse(Collections.singletonList(userService.findUserById(uid)));
     }
 
 }

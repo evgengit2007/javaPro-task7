@@ -1,5 +1,6 @@
 package javaPro.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import javaPro.dto.PaymentDto;
 import javaPro.response.PaymentCheckResponse;
 import javaPro.response.PaymentResponseDto;
@@ -8,6 +9,7 @@ import javaPro.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -28,10 +30,17 @@ public class PaymentController {
     }
 
     // так работает
-    // http://localhost:8990/v1/api/payments/create?user_id=1
-    @GetMapping("/{user_id}")
-    public PaymentResponseDto getProductByUserId(@RequestParam("user_id") Long userId) {
+    // http://localhost:8990/v1/api/payments/user/1
+    @GetMapping("/user/{userId}")
+    public PaymentResponseDto getProductByUserId(@PathVariable Long userId) throws JsonProcessingException {
+        System.out.println("Start PaymentController, getProductByUserId: " + userId);
         return productService.getProductByUser(userId);
+    }
+
+    @GetMapping("/product/{productId}/user/{userId}")
+    public PaymentResponseDto getProductByProductIdAndUserId(@PathVariable Long productId, @PathVariable Long userId) throws JsonProcessingException {
+        System.out.println("Start PaymentController, getProductByProductIdAndUserId: userId = " + userId + ", productId = " + productId);
+        return productService.getProductByProductIdAndUserId(productId, userId);
     }
 
     // рабочий пример
@@ -44,7 +53,8 @@ public class PaymentController {
     }
 */
     @PostMapping("/create")
-    public PaymentCheckResponse createPayment(@RequestBody PaymentDto paymentDto) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public PaymentCheckResponse createPayment(@RequestBody PaymentDto paymentDto) throws JsonProcessingException {
         logger.info("Start createPayment");
         System.out.println("Start createPayment");
         System.out.println(paymentDto.toString());

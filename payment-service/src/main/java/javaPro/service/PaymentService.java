@@ -1,12 +1,17 @@
 package javaPro.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import javaPro.dto.PaymentDto;
-import javaPro.dto.ProductDto;
+import javaPro.dto.Product;
+import javaPro.exception.LowBalanceException;
 import javaPro.exception.PaymentParamException;
+import javaPro.exception.ProductNotFoundException;
 import javaPro.response.PaymentResponseDto;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class PaymentService {
@@ -27,21 +32,24 @@ public class PaymentService {
     }
 */
 
-    public PaymentResponseDto executePayment(PaymentDto paymentDto) {
+    public PaymentResponseDto executePayment(PaymentDto paymentDto) throws JsonProcessingException {
         System.out.println("Start executePayment");
         if ((paymentDto.getProductId() == null && paymentDto.getAccountNumber() == null)
             || paymentDto.getUserId() == null || paymentDto.getSumPay() == null) {
             throw new PaymentParamException("Неверные параметры платежа");
         }
-        return this.productService.getProductByUser(paymentDto.getProductId());
+        List<Product> productList = productService.getProductByProductIdAndUserId(paymentDto.getProductId(), paymentDto.getUserId()).getProductList();
+        if (productList == null || productList.size() != 1) {
+            throw new ProductNotFoundException("Product not found!");
+        }
+        Product product = productList.get(0);
+        BigDecimal balance = product.getBalance();
+        if (Objects.isNull(balance) || balance.compareTo(paymentDto.getSumPay()) < 0) {
+            throw new LowBalanceException("Low balance!");
+        }
+        product.setBalance(balance.subtract(paymentDto.getSumPay()));
+        this.productService.updateBalance(product);
 
-
-/*
-        return restTemplate.postForObject(
-                paymentMethod,
-                null,
-                PaymentResponseDto.class
-        );
-*/
+        return new PaymentResponseDto(List.of(product));
     }
 }

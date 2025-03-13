@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.vtb.javaPro.dto.ProductDto;
 import ru.vtb.javaPro.entity.Product;
 import ru.vtb.javaPro.repository.ProductRepository;
 
@@ -24,4 +25,12 @@ public class ProductService {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
+    public Product findProductByPidAndUid(Long pid, Long uid) {
+        return productRepository.findByIdAndUser(pid, uid)
+                .orElseThrow(EntityNotFoundException::new);
+    }
+
+    public ProductDto create(Product product) {
+        ProductMapper
+    }
 }
