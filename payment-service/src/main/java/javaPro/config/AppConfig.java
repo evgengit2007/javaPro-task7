@@ -31,9 +31,4 @@ public class AppConfig {
                 .build();
     }
 
-/*
-    public String getProductId() {
-        return integrationProperties.getPaymentsPayProperties().getProductId();
-    }
-*/
 }

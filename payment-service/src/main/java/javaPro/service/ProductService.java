@@ -1,6 +1,7 @@
 package javaPro.service;
 
 import javaPro.config.properties.IntegrationProperties;
+import javaPro.config.properties.RestTemplateProperties;
 import javaPro.dto.ProductDto;
 import javaPro.response.PaymentResponseDto;
 import lombok.extern.slf4j.Slf4j;
@@ -14,18 +15,20 @@ import java.util.Map;
 @Slf4j
 @Service
 public class ProductService {
-    private final IntegrationProperties integrationProperties;
-    private final RestTemplate restTemplate;
+    IntegrationProperties integrationProperties;
+    RestTemplate restTemplate;
+    RestTemplateProperties restTemplateProperties;
 
     public ProductService(IntegrationProperties integrationProperties, RestTemplate restTemplate) {
         this.integrationProperties = integrationProperties;
         this.restTemplate = restTemplate;
+        this.restTemplateProperties = integrationProperties.getPaymentsPayProperties();
     }
 
     public PaymentResponseDto getProductByUser(Long userId) {
         Map<String, String> uidParams = new HashMap<>();
         uidParams.put("uid", userId.toString());
-        String property = integrationProperties.getPaymentsPayProperties().getAllPath() + integrationProperties.getPaymentsPayProperties().getUserId();
+        String property = restTemplateProperties.getAllPath() + restTemplateProperties.getUserId();
         PaymentResponseDto paymentResponseDto =  restTemplate.postForObject(
                 property,
                 null,
@@ -36,26 +39,25 @@ public class ProductService {
     }
 
     public PaymentResponseDto getProductByProductIdAndUserId(Long productId, Long userId) {
-        log.info("ProductService, start getProductByProductIdAndUserId, параметры: {} {}", productId, userId);
         Map<String, String> restTemplateParam = new HashMap<>();
         restTemplateParam.put("pid", productId.toString());
         restTemplateParam.put("uid", userId.toString());
-        String property = integrationProperties.getPaymentsPayProperties().getAllPath()
-                + integrationProperties.getPaymentsPayProperties().getProductId()
-                + integrationProperties.getPaymentsPayProperties().getUserId();
-        PaymentResponseDto paymentResponseDto =  restTemplate.postForObject(
+
+        String property = restTemplateProperties.getAllPath()
+                + restTemplateProperties.getProductId()
+                + restTemplateProperties.getUserId();
+        PaymentResponseDto paymentResponseDto = restTemplate.postForObject(
                 property,
                 null,
                 PaymentResponseDto.class,
-                restTemplateParam
-        );
+                restTemplateParam);
         return paymentResponseDto;
     }
 
     public PaymentResponseDto updateBalance(ProductDto productDto) {
         HttpEntity<ProductDto> productHttpEntity = new HttpEntity<>(productDto);
-        String property = integrationProperties.getPaymentsPayProperties().getAllPath()
-                + integrationProperties.getPaymentsPayProperties().getPaymentMethod();
+        String property = restTemplateProperties.getAllPath()
+                + restTemplateProperties.getPaymentMethod();
         PaymentResponseDto paymentResponseDto = restTemplate.postForObject(
                 property,
                 productHttpEntity,

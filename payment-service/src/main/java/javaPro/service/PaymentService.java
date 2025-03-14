@@ -39,10 +39,8 @@ public class PaymentService {
         if (Objects.isNull(balance) || balance.compareTo(paymentDto.getSumPay()) < 0) {
             throw new ExceptionLowBalance("The account balance is less than sum pay!");
         }
-        log.info("Before update: {}", productDto);
         productDto.setBalance(balance.subtract(paymentDto.getSumPay()));
         this.productService.updateBalance(productDto);
-        log.info("After update: {}", productDto);
 
         return new PaymentResponseDto(List.of(productDto));
     }
