@@ -31,4 +31,9 @@ public class AppConfig {
                 .build();
     }
 
+    @Bean
+    public RestTemplateProperties getProperty() {
+        return integrationProperties.getPaymentsPayProperties();
+    }
+
 }

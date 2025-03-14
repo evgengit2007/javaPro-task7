@@ -15,14 +15,12 @@ import java.util.Map;
 @Slf4j
 @Service
 public class ProductService {
-    IntegrationProperties integrationProperties;
-    RestTemplate restTemplate;
-    RestTemplateProperties restTemplateProperties;
+    private final RestTemplate restTemplate;
+    private final RestTemplateProperties restTemplateProperties;
 
-    public ProductService(IntegrationProperties integrationProperties, RestTemplate restTemplate) {
-        this.integrationProperties = integrationProperties;
+    public ProductService(RestTemplateProperties restTemplateProperties, RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
-        this.restTemplateProperties = integrationProperties.getPaymentsPayProperties();
+        this.restTemplateProperties = restTemplateProperties;
     }
 
     public PaymentResponseDto getProductByUser(Long userId) {
