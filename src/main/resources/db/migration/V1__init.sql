@@ -28,8 +28,8 @@ CREATE INDEX idx_products_id ON public.products(id);
 
 insert into public.products (account_number, balance, type_products, user_id)
 values
-    ('40802810345124535123', 123.12, 'ACCOUNT', 1),
-    ('6453411547575745431', 323.44, 'CARD', 3),
-    ('1234567889', 53535.00, 'CARD', 3),
-    ('40802810233223322122', 555.12, 'ACCOUNT', 1)
+    ('40802810345124535123', 99999.00, 'ACCOUNT', 1),
+    ('6453411547575745431', 15.44, 'CARD', 3),
+    ('1234567889', 55555.00, 'CARD', 3),
+    ('40802810233223322122', 666.66, 'ACCOUNT', 1)
 ;

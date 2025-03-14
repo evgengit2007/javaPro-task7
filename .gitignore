@@ -99,3 +99,8 @@ replay_pid*
 /.idea/vcs.xml
 /target/classes/db/migration/V1__init.sql
 /target/classes/application.yml
+/payment-service/target/classes/application.yml
+/target/maven-status/maven-compiler-plugin/compile/default-cli/createdFiles.lst
+/target/maven-status/maven-compiler-plugin/compile/default-cli/inputFiles.lst
+/.idea/uiDesigner.xml
+/payment-service/payment-service.iml

@@ -3,6 +3,10 @@ server:
     context-path: "/products"
   port: 8989
 
+service:
+  username: postgres
+  password: postgres
+
 spring:
   application:
     name: product-core
