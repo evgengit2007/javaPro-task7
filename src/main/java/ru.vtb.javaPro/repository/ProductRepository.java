@@ -1,18 +1,19 @@
 package ru.vtb.javaPro.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.vtb.javaPro.dto.ProductDto;
+import org.springframework.stereotype.Repository;
 import ru.vtb.javaPro.entity.Product;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    List<Product> findByUser(Long id);
+    Optional<List<Product>> findByUser(Long id);
 
     Optional<Product> findById(Long id);
 
-    Optional<ProductDto> findByIdAndUser(Long pid, Long uid);
+    Optional<Product> findByIdAndUser(Long pid, Long uid);
 
 }

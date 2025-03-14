@@ -1,5 +1,6 @@
 package javaPro.config;
 
+import javaPro.config.component.ErrorPathRestTemplate;
 import javaPro.config.properties.IntegrationProperties;
 import javaPro.config.properties.RestTemplateProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -19,23 +20,20 @@ public class AppConfig {
     }
 
     @Bean
-    public RestTemplate paymentsStructure() {
+    public RestTemplate paymentsStructure(ErrorPathRestTemplate errorPathRestTemplate) {
         RestTemplateProperties restTemplateProperties = integrationProperties.getPaymentsPayProperties();
-        System.out.println("Uri = " + restTemplateProperties.getUri());
-        System.out.println("product-id = " + restTemplateProperties.getProductId());
-        System.out.println("user-id = " + restTemplateProperties.getUserId());
-        System.out.println("sum = " + restTemplateProperties.getSum());
-        System.out.println("account-number = " + restTemplateProperties.getAccountNumber());
 
         return new RestTemplateBuilder()
                 .rootUri(restTemplateProperties.getUri())
                 .connectTimeout(restTemplateProperties.getConnectTimeout())
                 .readTimeout(restTemplateProperties.getReadTimeout())
-//                .errorHandler(errorHandler) // позже передать в сигнатуре метода класс RestTemplateResponseErrorHandler
+                .errorHandler(errorPathRestTemplate)
                 .build();
     }
 
+/*
     public String getProductId() {
         return integrationProperties.getPaymentsPayProperties().getProductId();
     }
+*/
 }

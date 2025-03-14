@@ -1,6 +1,6 @@
 package javaPro.response;
 
-import javaPro.dto.Product;
+import javaPro.dto.ProductDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +12,8 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 public class PaymentResponseDto {
-    private List<Product> productList;
+    private List<ProductDto> productListDto;
 }

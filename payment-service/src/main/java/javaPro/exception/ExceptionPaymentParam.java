@@ -3,9 +3,9 @@ package javaPro.exception;
 import lombok.Getter;
 
 @Getter
-public class PaymentParamException extends RuntimeException {
+public class ExceptionPaymentParam extends RuntimeException {
     private final String message;
-    public PaymentParamException (String message) {
+    public ExceptionPaymentParam(String message) {
         super(message);
        this.message = message;
     }

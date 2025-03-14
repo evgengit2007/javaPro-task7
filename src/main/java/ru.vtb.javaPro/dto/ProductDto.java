@@ -7,7 +7,7 @@ public record ProductDto(
         String accountNumber,
         BigDecimal balance,
         String typeProducts,
-        Long userId)
+        Long user)
 {
     @Override
     public String toString() {
@@ -16,7 +16,7 @@ public record ProductDto(
                 ", accountNumber='" + accountNumber + '\'' +
                 ", balance=" + balance +
                 ", typeProducts='" + typeProducts + '\'' +
-                ", userId=" + userId +
+                ", user=" + user +
                 '}';
     }
 }

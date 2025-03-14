@@ -14,7 +14,7 @@ public class MaptoProduct implements MapRequestBody<ProductDto, Product>{
         product.setAccountNumber(requestBody.accountNumber());
         product.setBalance(requestBody.balance());
         product.setTypeProducts(requestBody.typeProducts());
-        product.setUser(requestBody.userId());
+        product.setUser(requestBody.user());
         return product;
     }
 }

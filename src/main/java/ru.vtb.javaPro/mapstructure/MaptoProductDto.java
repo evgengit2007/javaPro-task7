@@ -5,6 +5,7 @@ import ru.vtb.javaPro.dto.ProductDto;
 import ru.vtb.javaPro.entity.Product;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -25,6 +26,7 @@ public class MaptoProductDto implements MapRequestBody<Product, ProductDto>{
         List<ProductDto> productDtoList = new ArrayList<>();
         for (Product product: productList) {
             productDtoList.add(mapper(product));
+            System.out.println(product);
         }
         return productDtoList;
     }

@@ -1,8 +1,7 @@
 package javaPro.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import javaPro.config.properties.IntegrationProperties;
-import javaPro.dto.Product;
+import javaPro.dto.ProductDto;
 import javaPro.response.PaymentResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -23,12 +22,10 @@ public class ProductService {
         this.restTemplate = restTemplate;
     }
 
-    public PaymentResponseDto getProductByUser(Long userId) throws JsonProcessingException {
+    public PaymentResponseDto getProductByUser(Long userId) {
         Map<String, String> uidParams = new HashMap<>();
         uidParams.put("uid", userId.toString());
-        System.out.println("Start getProductByUser");
         String property = integrationProperties.getPaymentsPayProperties().getAllPath() + integrationProperties.getPaymentsPayProperties().getUserId();
-        System.out.println("getProductByUser, user-id = " + property);
         PaymentResponseDto paymentResponseDto =  restTemplate.postForObject(
                 property,
                 null,
@@ -38,31 +35,27 @@ public class ProductService {
         return paymentResponseDto;
     }
 
-    public PaymentResponseDto getProductByProductIdAndUserId(Long productId, Long userId) throws JsonProcessingException {
-        Map<String, String> uidParams = new HashMap<>();
-        uidParams.put("pid", productId.toString());
-        uidParams.put("uid", userId.toString());
-        System.out.println("Start getProductByProductIdAndUserId");
+    public PaymentResponseDto getProductByProductIdAndUserId(Long productId, Long userId) {
+        log.info("ProductService, start getProductByProductIdAndUserId, параметры: {} {}", productId, userId);
+        Map<String, String> restTemplateParam = new HashMap<>();
+        restTemplateParam.put("pid", productId.toString());
+        restTemplateParam.put("uid", userId.toString());
         String property = integrationProperties.getPaymentsPayProperties().getAllPath()
                 + integrationProperties.getPaymentsPayProperties().getProductId()
                 + integrationProperties.getPaymentsPayProperties().getUserId();
-        System.out.println("getProductByProductIdAndUserId, product-and-user-id = "
-                + property);
         PaymentResponseDto paymentResponseDto =  restTemplate.postForObject(
                 property,
                 null,
                 PaymentResponseDto.class,
-                uidParams
+                restTemplateParam
         );
         return paymentResponseDto;
     }
 
-    public PaymentResponseDto updateBalance(Product product) {
-        HttpEntity<Product> productHttpEntity = new HttpEntity<>(product);
+    public PaymentResponseDto updateBalance(ProductDto productDto) {
+        HttpEntity<ProductDto> productHttpEntity = new HttpEntity<>(productDto);
         String property = integrationProperties.getPaymentsPayProperties().getAllPath()
-                + integrationProperties.getPaymentsPayProperties().getProductId()
-                + integrationProperties.getPaymentsPayProperties().getUserId();
-        System.out.println("updateBalance: " + property);
+                + integrationProperties.getPaymentsPayProperties().getPaymentMethod();
         PaymentResponseDto paymentResponseDto = restTemplate.postForObject(
                 property,
                 productHttpEntity,

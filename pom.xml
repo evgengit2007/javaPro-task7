@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>javaPro</groupId>
-    <artifactId>product-service</artifactId>
+    <artifactId>productDto-service</artifactId>
     <version>1.0-SNAPSHOT</version>
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->

@@ -2,17 +2,19 @@ package javaPro.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javaPro.dto.PaymentDto;
-import javaPro.dto.Product;
-import javaPro.exception.LowBalanceException;
-import javaPro.exception.PaymentParamException;
-import javaPro.exception.ProductNotFoundException;
+import javaPro.dto.ProductDto;
+import javaPro.exception.ExceptionLowBalance;
+import javaPro.exception.ExceptionPaymentParam;
+import javaPro.exception.ExceptionProductNotFound;
 import javaPro.response.PaymentResponseDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
+@Slf4j
 @Service
 public class PaymentService {
 
@@ -21,35 +23,27 @@ public class PaymentService {
     public PaymentService(ProductService productService) {
         this.productService = productService;
     }
-/*
-    private final String paymentMethod;
-    private final RestTemplate restTemplate;
-
-    public PaymentService(RestTemplate restTemplate,
-                          @Value("${service.integration.payments-client.payment-method}") String paymentMethod) {
-        this.restTemplate = restTemplate;
-        this.paymentMethod = paymentMethod;
-    }
-*/
 
     public PaymentResponseDto executePayment(PaymentDto paymentDto) throws JsonProcessingException {
-        System.out.println("Start executePayment");
+        log.info("Start executePayment");
         if ((paymentDto.getProductId() == null && paymentDto.getAccountNumber() == null)
             || paymentDto.getUserId() == null || paymentDto.getSumPay() == null) {
-            throw new PaymentParamException("Неверные параметры платежа");
+            throw new ExceptionPaymentParam("Invalid payment parameters");
         }
-        List<Product> productList = productService.getProductByProductIdAndUserId(paymentDto.getProductId(), paymentDto.getUserId()).getProductList();
-        if (productList == null || productList.size() != 1) {
-            throw new ProductNotFoundException("Product not found!");
+        List<ProductDto> productListDto = productService.getProductByProductIdAndUserId(paymentDto.getProductId(), paymentDto.getUserId()).getProductListDto();
+        if (productListDto == null || productListDto.size() != 1) {
+            throw new ExceptionProductNotFound("Product not found!");
         }
-        Product product = productList.get(0);
-        BigDecimal balance = product.getBalance();
+        ProductDto productDto = productListDto.get(0);
+        BigDecimal balance = productDto.getBalance();
         if (Objects.isNull(balance) || balance.compareTo(paymentDto.getSumPay()) < 0) {
-            throw new LowBalanceException("Low balance!");
+            throw new ExceptionLowBalance("The account balance is less than sum pay!");
         }
-        product.setBalance(balance.subtract(paymentDto.getSumPay()));
-        this.productService.updateBalance(product);
+        log.info("Before update: {}", productDto);
+        productDto.setBalance(balance.subtract(paymentDto.getSumPay()));
+        this.productService.updateBalance(productDto);
+        log.info("After update: {}", productDto);
 
-        return new PaymentResponseDto(List.of(product));
+        return new PaymentResponseDto(List.of(productDto));
     }
 }

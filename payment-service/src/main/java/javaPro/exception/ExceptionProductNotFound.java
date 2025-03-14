@@ -3,10 +3,10 @@ package javaPro.exception;
 import lombok.Getter;
 
 @Getter
-public class ProductNotFoundException extends RuntimeException {
+public class ExceptionProductNotFound extends RuntimeException {
     private final String message;
 
-    public ProductNotFoundException(String message) {
+    public ExceptionProductNotFound(String message) {
         super(message);
         this.message = message;
     }

@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-public class Product {
+public class ProductDto {
     private Long id;
     private String accountNumber;
     private BigDecimal balance;
@@ -15,7 +15,7 @@ public class Product {
     private Long user;
 
 
-    public Product(
+    public ProductDto(
             Long id,
             String accountNumber,
             BigDecimal balance,
@@ -27,5 +27,16 @@ public class Product {
         this.balance = balance;
         this.typeProducts = typeProducts;
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductDto{" +
+                "id=" + id +
+                ", accountNumber='" + accountNumber + '\'' +
+                ", balance=" + balance +
+                ", typeProducts='" + typeProducts + '\'' +
+                ", user=" + user +
+                '}';
     }
 }

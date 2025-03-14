@@ -17,6 +17,3 @@ service:
       sum: "/{sum}"
       account-number: "/{acc}"
       payment-method: "/create"
-
-#service:
-#  payment-method: "executor/payments/execute"

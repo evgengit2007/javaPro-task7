@@ -7,19 +7,13 @@ import javaPro.response.PaymentResponseDto;
 import javaPro.service.PaymentService;
 import javaPro.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collections;
-
 
 @Slf4j
 @RestController
 @RequestMapping("/v1/api/payments")
 public class PaymentController {
-    private static final Logger logger = LoggerFactory.getLogger(PaymentController.class);
 
     private final PaymentService paymentService;
     private final ProductService productService;
@@ -29,36 +23,32 @@ public class PaymentController {
         this.productService = productService;
     }
 
-    // так работает
-    // http://localhost:8990/v1/api/payments/user/1
+    // Образец: http://localhost:8990/v1/api/payments/user/1
     @GetMapping("/user/{userId}")
-    public PaymentResponseDto getProductByUserId(@PathVariable Long userId) throws JsonProcessingException {
-        System.out.println("Start PaymentController, getProductByUserId: " + userId);
+    public PaymentResponseDto getProductByUserId(@PathVariable Long userId) {
         return productService.getProductByUser(userId);
     }
 
+    // Образец: http://localhost:8990/v1/api/payments/product/1/user/1
     @GetMapping("/product/{productId}/user/{userId}")
-    public PaymentResponseDto getProductByProductIdAndUserId(@PathVariable Long productId, @PathVariable Long userId) throws JsonProcessingException {
-        System.out.println("Start PaymentController, getProductByProductIdAndUserId: userId = " + userId + ", productId = " + productId);
+    public PaymentResponseDto getProductByProductIdAndUserId(@PathVariable Long productId, @PathVariable Long userId) {
+        log.info("Старт поиска продукта по id продукта и id юзера: {} {} ", productId, userId);
         return productService.getProductByProductIdAndUserId(productId, userId);
     }
 
-    // рабочий пример
+    // Образец
 /*
-    {
-        "product_id": 1,
-            "user_id": 1,
-            "account_number": "31321321",
-            "sum_pay": 123.12
-    }
+{
+    "product_id": 1,
+    "user_id": 1,
+    "account_number": "31321321",
+    "sum_pay": 10.12
+}
 */
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public PaymentCheckResponse createPayment(@RequestBody PaymentDto paymentDto) throws JsonProcessingException {
-        logger.info("Start createPayment");
-        System.out.println("Start createPayment");
-        System.out.println(paymentDto.toString());
-        var response = paymentService.executePayment(paymentDto);
-        return new PaymentCheckResponse("Result: " + response);
+    public PaymentResponseDto createPayment(@RequestBody PaymentDto paymentDto) throws JsonProcessingException {
+        log.info("Start createPayment");
+        return paymentService.executePayment(paymentDto);
     }
 }
